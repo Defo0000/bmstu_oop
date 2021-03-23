@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "items.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -15,21 +17,22 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
-  void add_point(int x, int y);
-  void load_data(std::ifstream& f);
+  int load_data(FILE *f, parr_t& dots_arr, larr_t& links_arr);
+  void draw_figure();
 
 private slots:
 
-  void on_pushButton_clicked();
-
   void on_MainWindow_destroyed();
-
-  void on_pushButton_2_clicked();
 
   void on_pushButton_8_clicked();
 
   void on_pushButton_5_pressed();
 
+  void on_pushButton_4_clicked();
+
+  void on_pushButton_3_clicked();
+
+  void on_pushButton_7_clicked();
 
 private:
   Ui::MainWindow *ui;
