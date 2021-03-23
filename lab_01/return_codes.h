@@ -3,7 +3,6 @@
 
 #define ERR_ALLOCATION -1
 #define ERR_FSCANF     -2
-#define ERR_DIM        -3
 
 #define OK              0
 
