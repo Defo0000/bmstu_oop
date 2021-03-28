@@ -3,14 +3,14 @@
 
 typedef struct
 {
-    unsigned int l1;
-    unsigned int l2;
+    unsigned int l_src;
+    unsigned int l_dst;
 } link_t;
 
 typedef struct
 {
     size_t size;
-    link_t *larr;
+    link_t *arr;
 } larr_t;
 
 #endif // LINK_H

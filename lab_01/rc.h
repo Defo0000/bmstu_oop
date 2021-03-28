@@ -7,6 +7,8 @@ typedef enum
     ERR_FILE,
     ERR_ALLOC,
     ERR_READ,
+    ERR_SIZE,
+    ERR_DATA,
     ERR_UNKNOWN_CMD,
 } rc_t;
 
