@@ -1,6 +1,10 @@
 #ifndef RC_H
 #define RC_H
 
+#include <cstddef>
+#include <cstdio>
+#include <cstdlib>
+
 typedef enum
 {
     OK,

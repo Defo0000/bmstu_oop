@@ -1,10 +1,6 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-
 #include "rc.h"
 
 typedef struct
@@ -42,10 +38,6 @@ typedef struct
 } parr_t;
 
 rc_t get_points(parr_t& points, FILE *f);
-rc_t read_amount(parr_t& points, FILE *f);
-rc_t allocate_points(parr_t& points);
-rc_t read_points(point_t *const arr, const size_t size, FILE *f);
-rc_t read_point(point_t& point, FILE *f);
 void free_points(parr_t& points);
 
 #endif // POINT_H

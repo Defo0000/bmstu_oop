@@ -1,38 +1,70 @@
 #include "figure.h"
 
-figure_t& init()
-{
-    static figure_t figure;
-
-    figure.points.arr = nullptr;
-    figure.points.size = 0;
-
-    figure.center.x = 0;
-    figure.center.y = 0;
-    figure.center.z = 0;
-
-    figure.links.arr = nullptr;
-    figure.links.size = 0;
-
-    return figure;
-}
-
-rc_t load_cur_figure(figure_t& figure, FILE *f)
+rc_t load_temp_figure(figure_t& figure, FILE *f)
 {
     rc_t return_code = OK;
-
+    if (!(return_code = get_points(figure.points, f)))
+    {
+        return_code = get_links(figure.links, f);
+        if (return_code)
+        {
+            free_points(figure.points);
+        }
+    }
     return return_code;
 }
 
 rc_t load_figure(figure_t &figure, filename_t name)
 {
+    rc_t return_code = OK;
     FILE *f = fopen(name, "r");
     if (!f)
     {
-        return ERR_FILE;
+        return_code = ERR_FILE;
     }
-    rc_t return_code = OK;
-    figure_t cur_figure = init();
-    return_code = load_cur_figure(cur_figure, f);
+    if (!return_code)
+    {
+        figure_t temp_figure;
+        init(temp_figure);
+        return_code = load_temp_figure(temp_figure, f);
+        fclose(f);
+        if (!return_code)
+        {
+            free_figure(figure);
+            figure = temp_figure;
+        }
+    }
     return return_code;
+}
+
+void free_figure(figure_t& figure)
+{
+    free_points(figure.points);
+    free_links(figure.links);
+}
+
+void init(figure_t& figure)
+{
+    init_parr(figure.points);
+    init_larr(figure.links);
+    init_point(figure.center);
+}
+
+void init_parr(parr_t& points)
+{
+    points.arr = nullptr;
+    points.size = 0;
+}
+
+void init_larr(larr_t& links)
+{
+    links.arr = nullptr;
+    links.size = 0;
+}
+
+void init_point(point_t &point)
+{
+    point.x = 0;
+    point.y = 0;
+    point.z = 0;
 }
