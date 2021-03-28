@@ -7,7 +7,7 @@ rc_t event_handler(const event_t event)
     switch (event.task)
     {
         case LOAD:
-            //err = load_figure
+            
             break;
         case SCALE:
             break;

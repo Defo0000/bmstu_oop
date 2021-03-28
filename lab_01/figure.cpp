@@ -16,3 +16,13 @@ figure_t init()
 
     return figure;
 }
+
+rc_t load_data(figure_t &figure, filename_t name) 
+{
+    FILE *f = fopen(name, "r");
+    if (!f)
+    {
+        return ERR_FILE;
+    }
+    
+}
