@@ -52,7 +52,7 @@ static rc_t allocate_points(parr_t& points)
 static rc_t read_amount(parr_t& points, FILE *f)
 {
     rc_t return_code = OK;
-    if (fscanf(f, "%lf", points.size) != 1)
+    if (fscanf(f, "%ld", &(points.size)) != 1)
     {
         return_code = ERR_READ;
     }
@@ -66,6 +66,7 @@ rc_t get_points(parr_t& points, FILE *f)
     {
         return_code = ERR_FILE;
     }
+
     if (!return_code)
     {
         if (!(return_code = read_amount(points, f)) && !(return_code = allocate_points(points)))

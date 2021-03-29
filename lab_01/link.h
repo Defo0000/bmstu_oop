@@ -2,6 +2,15 @@
 #define LINK_H
 
 #include "rc.h"
+#include "point.h"
+#include <QtWidgets>
+
+typedef struct
+{
+    QGraphicsScene *scene;
+    double width;
+    double height;
+} plane_t;
 
 typedef struct
 {
@@ -17,5 +26,6 @@ typedef struct
 
 rc_t get_links(larr_t& links, FILE *f);
 void free_links(larr_t& links);
+rc_t draw_links(const larr_t links, const parr_t points, const plane_t plane);
 
 #endif // LINK_H

@@ -18,8 +18,10 @@ rc_t event_handler(const event_t event)
         case MOVE:
             break;
         case DRAW:
+            return_code = draw_figure(figure, event.plane);
             break;
         case QUIT:
+            free_figure(figure);
             break;
         default:
             return_code = ERR_UNKNOWN_CMD;

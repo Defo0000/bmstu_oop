@@ -20,5 +20,6 @@ void init_parr(parr_t& points);
 void init_larr(larr_t& links);
 rc_t load_figure(figure_t &figure, filename_t name);
 void free_figure(figure_t& figure);
+rc_t draw_figure(const figure_t figure, const plane_t plane);
 
 #endif // FIGURE_H

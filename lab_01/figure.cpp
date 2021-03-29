@@ -10,6 +10,7 @@ rc_t load_temp_figure(figure_t& figure, FILE *f)
         {
             free_points(figure.points);
         }
+        return_code = OK;
     }
     return return_code;
 }
@@ -34,6 +35,14 @@ rc_t load_figure(figure_t &figure, filename_t name)
             figure = temp_figure;
         }
     }
+    return return_code;
+}
+
+rc_t draw_figure(const figure_t figure, const plane_t plane)
+{
+    rc_t return_code = OK;
+    plane.scene->clear();
+    return_code = draw_links(figure.links, figure.points, plane);
     return return_code;
 }
 

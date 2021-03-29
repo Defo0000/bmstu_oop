@@ -1,6 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include "link.h"
 #include "point.h"
 #include "rc.h"
 
@@ -25,6 +26,7 @@ typedef struct
         scale_t scale;
         move_t move;
         rotate_t rotate;
+        plane_t plane;
     };
 } event_t;
 

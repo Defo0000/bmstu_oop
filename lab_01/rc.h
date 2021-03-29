@@ -5,6 +5,8 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <QMessageBox>
+
 typedef enum
 {
     OK,
@@ -15,5 +17,7 @@ typedef enum
     ERR_DATA,
     ERR_UNKNOWN_CMD,
 } rc_t;
+
+void handle_return_code(const rc_t code);
 
 #endif // RC_H

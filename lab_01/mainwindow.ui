@@ -34,7 +34,7 @@
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>20</y>
+      <y>90</y>
       <width>221</width>
       <height>51</height>
      </rect>
@@ -51,7 +51,7 @@ background-color: rgb(52, 101, 164);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>150</y>
+      <y>280</y>
       <width>221</width>
       <height>51</height>
      </rect>
@@ -68,7 +68,7 @@ background-color: rgb(52, 101, 164);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>340</y>
+      <y>470</y>
       <width>221</width>
       <height>51</height>
      </rect>
@@ -85,7 +85,7 @@ background-color: rgb(52, 101, 164);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>520</y>
+      <y>650</y>
       <width>221</width>
       <height>51</height>
      </rect>
@@ -119,7 +119,7 @@ background-color: rgb(52, 101, 164);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>110</y>
+      <y>50</y>
       <width>221</width>
       <height>31</height>
      </rect>
@@ -132,7 +132,7 @@ background-color: rgb(52, 101, 164);</string>
     <property name="geometry">
      <rect>
       <x>1160</x>
-      <y>80</y>
+      <y>20</y>
       <width>111</width>
       <height>18</height>
      </rect>
@@ -148,7 +148,7 @@ background-color: rgb(52, 101, 164);</string>
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>260</y>
+      <y>200</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -161,7 +161,7 @@ background-color: rgb(52, 101, 164);</string>
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>300</y>
+      <y>240</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -174,7 +174,7 @@ background-color: rgb(52, 101, 164);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>260</y>
+      <y>200</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -191,7 +191,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>220</y>
+      <y>160</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -204,7 +204,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>220</y>
+      <y>160</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -221,7 +221,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>300</y>
+      <y>240</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -233,11 +233,11 @@ color: rgb(238, 238, 236);</string>
      <string>Z:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="mx">
+   <widget class="QLineEdit" name="dx">
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>400</y>
+      <y>350</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -246,11 +246,11 @@ color: rgb(238, 238, 236);</string>
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="mz">
+   <widget class="QLineEdit" name="dz">
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>480</y>
+      <y>430</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -263,7 +263,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>480</y>
+      <y>430</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -279,7 +279,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>440</y>
+      <y>390</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -292,11 +292,11 @@ color: rgb(238, 238, 236);</string>
      <string>Y:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="my">
+   <widget class="QLineEdit" name="dy">
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>440</y>
+      <y>390</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -309,7 +309,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>400</y>
+      <y>350</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -326,7 +326,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>590</y>
+      <y>530</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -339,7 +339,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>670</y>
+      <y>610</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -352,7 +352,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>670</y>
+      <y>610</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -368,7 +368,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>630</y>
+      <y>570</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -385,7 +385,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>630</y>
+      <y>570</y>
       <width>181</width>
       <height>30</height>
      </rect>
@@ -398,7 +398,7 @@ color: rgb(238, 238, 236);</string>
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>590</y>
+      <y>530</y>
       <width>31</width>
       <height>31</height>
      </rect>
