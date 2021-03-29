@@ -1,5 +1,23 @@
 #include "figure.h"
 
+rc_t scale_figure(figure_t &figure, const scale_t params)
+{
+    rc_t return_code = scale_points(figure.points, figure.center, params);
+    return return_code;
+}
+
+rc_t move_figure(figure_t &figure, const move_t params)
+{
+    rc_t return_code = move_points(figure.points, params);
+    return return_code;
+}
+
+rc_t rotate_figure(figure_t &figure, const rotate_t params)
+{
+    rc_t return_code = rotate_points(figure.points, figure.center, params);
+    return return_code;
+}
+
 rc_t load_temp_figure(figure_t& figure, FILE *f)
 {
     rc_t return_code = OK;

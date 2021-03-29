@@ -40,4 +40,15 @@ typedef struct
 rc_t get_points(parr_t& points, FILE *f);
 void free_points(parr_t& points);
 
+rc_t scale_points(parr_t &points, point_t &center, const scale_t &params);
+static void scale_point(point_t &point, const point_t center, const scale_t &params);
+
+rc_t move_points(parr_t &points, const move_t &params);
+static void move_point(point_t &point, const move_t &params);
+
+rc_t rotate_points(parr_t &points, point_t &center, const rotate_t &params);
+static void x_rotate_point(point_t &point, point_t &center, const double angle);
+static void y_rotate_point(point_t &point, point_t &center, const double angle);
+static void z_rotate_point(point_t &point, point_t &center, const double angle);
+
 #endif // POINT_H

@@ -12,10 +12,13 @@ rc_t event_handler(const event_t event)
             return_code = load_figure(figure, event.filename);
             break;
         case SCALE:
+            return_code = scale_figure(figure, event.scale);
             break;
         case ROTATE:
+            //return_code = rotate_figure(figure, event.rotate);
             break;
         case MOVE:
+            return_code = move_figure(figure, event.move);
             break;
         case DRAW:
             return_code = draw_figure(figure, event.plane);
