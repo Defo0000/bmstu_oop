@@ -4,8 +4,7 @@
 rc_t event_handler(const event_t event)
 {
     rc_t return_code = OK;
-    figure_t figure;
-    init(figure);
+    static figure_t figure = init();
     switch (event.task)
     {
         case LOAD:
@@ -14,11 +13,11 @@ rc_t event_handler(const event_t event)
         case SCALE:
             return_code = scale_figure(figure, event.scale);
             break;
-        case ROTATE:
-            //return_code = rotate_figure(figure, event.rotate);
-            break;
         case MOVE:
             return_code = move_figure(figure, event.move);
+            break;
+        case ROTATE:
+            return_code = rotate_figure(figure, event.rotate);
             break;
         case DRAW:
             return_code = draw_figure(figure, event.plane);
