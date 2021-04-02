@@ -4,7 +4,7 @@
 rc_t event_handler(const event_t event)
 {
     rc_t return_code = OK;
-    static figure_t figure = init();
+    static figure_t figure = init_figure();
     switch (event.task)
     {
         case LOAD:

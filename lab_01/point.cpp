@@ -122,39 +122,61 @@ rc_t move_points(parr_t &points, const move_t params)
     return return_code;
 }
 
-double to_radians(const double angle_degrees)
+static double to_radians(const double angle_degrees)
 {
     return angle_degrees * M_PI / 180;
 }
 
-void x_rotate_point(point_t &point, point_t &center, const double angle)
+static void move_to_start(point_t &point, point_t center)
 {
-    double cos_a = cos(to_radians(angle));
-    double sin_a = sin(to_radians(angle));
-    point_t temp = point;
-    temp.y = (point.y - center.y) * cos_a - (point.z - center.z) * sin_a;
-    temp.z = (point.y - center.y) * sin_a + (point.z - center.z) * cos_a;
-    point = temp;
+    move_t to_move;
+
+    to_move.dx = -center.x;
+    to_move.dy = -center.y;
+    to_move.dz = -center.z;
+
+    move_point(point, to_move);
 }
 
-void y_rotate_point(point_t &point, point_t &center, const double angle)
+static void move_to_center(point_t &point, point_t center)
 {
-    double cos_a = cos(to_radians(angle));
-    double sin_a = sin(to_radians(angle));
-    point_t temp = point;
-    temp.x = (point.x - center.x) * cos_a + (point.z - center.z) * sin_a;
-    temp.z = -(point.x - center.x) * sin_a + (point.z - center.z) * cos_a;
-    point = temp;
+    move_t to_move;
+
+    to_move.dx = center.x;
+    to_move.dy = center.y;
+    to_move.dz = center.z;
+
+    move_point(point, to_move);
 }
 
-void z_rotate_point(point_t &point, point_t &center, const double angle)
+void x_rotate_point(point_t &point, const double angle)
 {
     double cos_a = cos(to_radians(angle));
     double sin_a = sin(to_radians(angle));
     point_t temp = point;
-    temp.x = (point.x - center.x) * cos_a - (point.y - center.y) * sin_a;
-    temp.y = (point.x - center.x) * sin_a + (point.y - center.y) * cos_a;
-    point = temp;
+
+    point.y = point.y * cos_a - point.z * sin_a;
+    point.z = temp.y * sin_a + point.z * cos_a;
+}
+
+void y_rotate_point(point_t &point, const double angle)
+{
+    double cos_a = cos(to_radians(angle));
+    double sin_a = sin(to_radians(angle));
+    point_t temp = point;
+
+    point.x = point.x * cos_a + point.z * sin_a;
+    point.z = -temp.x * sin_a + point.z * cos_a;
+}
+
+void z_rotate_point(point_t &point, const double angle)
+{
+    double cos_a = cos(to_radians(angle));
+    double sin_a = sin(to_radians(angle));
+    point_t temp = point;
+
+    point.x = point.x * cos_a - point.y * sin_a;
+    point.y = temp.x * sin_a + point.y * cos_a;
 }
 
 rc_t rotate_points(parr_t &points, point_t &center, const rotate_t params)
@@ -166,9 +188,13 @@ rc_t rotate_points(parr_t &points, point_t &center, const rotate_t params)
     }
     else for (size_t i = 0; i < points.size; i++)
     {
-        x_rotate_point(points.arr[i], center, params.rx);
-        y_rotate_point(points.arr[i], center, params.ry);
-        z_rotate_point(points.arr[i], center, params.rz);
+        move_to_start(points.arr[i], center);
+
+        x_rotate_point(points.arr[i], params.rx);
+        y_rotate_point(points.arr[i], params.ry);
+        z_rotate_point(points.arr[i], params.rz);
+
+        move_to_center(points.arr[i], center);
     }
     return return_code;
 }

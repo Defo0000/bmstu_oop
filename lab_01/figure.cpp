@@ -43,7 +43,7 @@ rc_t load_figure(figure_t &figure, filename_t name)
     }
     if (!return_code)
     {
-        figure_t temp_figure = init();
+        figure_t temp_figure = init_figure();
         return_code = load_temp_figure(temp_figure, f);
         fclose(f);
         if (!return_code)
@@ -69,29 +69,16 @@ void free_figure(figure_t& figure)
     free_links(figure.links);
 }
 
-figure_t &init()
+figure_t &init_figure()
 {
     static figure_t figure;
 
-    figure.points.arr = nullptr;
-    figure.points.size = 0;
-
-    figure.center.x = 0;
-    figure.center.y = 0;
-    figure.center.z = 0;
-
-    figure.links.arr = nullptr;
-    figure.links.size = 0;
+    init_parr(figure.points);
+    init_point(figure.center);
+    init_larr(figure.links);
 
     return figure;
 }
-
-//void init(figure_t& figure)
-//{
-//    init_parr(figure.points);
-//    init_larr(figure.links);
-//    init_point(figure.center);
-//}
 
 void init_parr(parr_t& points)
 {

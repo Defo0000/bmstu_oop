@@ -14,7 +14,7 @@ typedef struct
     point_t center;
 } figure_t;
 
-figure_t &init();
+figure_t &init_figure();
 void init_point(point_t& point);
 void init_parr(parr_t& points);
 void init_larr(larr_t& links);
