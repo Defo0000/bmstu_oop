@@ -3,11 +3,11 @@
 
 #include <iostream>
 
-class Base_List {
+class list_base {
 
 public:
-    Base_List();
-    virtual ~Base_List();
+    list_base();
+    virtual ~list_base();
     virtual bool is_empty() const = 0;
     size_t size() const;
 
