@@ -14,13 +14,13 @@ public:
 
     virtual ~list_node();
 
-    void set(const T data);
+    void set(const T &data);
     void set_next(const list_node<T> &node);
     void set_next(const shared_ptr<list_node<T>> &node);
 
     T get() const;
     T &get_ptr();
-    list_node<T> get_next() const;
+    list_node<T> get_next() const; ///???
     shared_ptr<list_node<T>> get_next() const;
 
     bool operator == (const shared_ptr<list_node<T>> &node) const;
