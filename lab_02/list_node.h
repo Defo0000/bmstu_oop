@@ -1,8 +1,6 @@
 #ifndef LIST_NODE_H
 #define LIST_NODE_H
 
-#include <memory>
-
 template <typename T>
 class list_node
 {

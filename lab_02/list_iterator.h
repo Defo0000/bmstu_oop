@@ -15,7 +15,7 @@ public:
     virtual ~list_iterator() = default;
 
     operator bool() const;
-    virtual void go_to_next();
+    virtual void next();
 
     list_node<T> *operator ->();
     const list_node<T> *operator ->() const;

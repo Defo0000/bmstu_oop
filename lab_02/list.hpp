@@ -1,23 +1,110 @@
 #ifndef _LIST_HPP_
 #define _LIST_HPP_
 
-#include "list.h"
-
 template <typename T>
-list<T>::list() : head(nullptr), tail(nullptr) {}
-
-template <typename T>
-bool list<T>::is_empty() const
+list<T>::list()
 {
-    return this->head == nullptr;
+    this->_size = 0;
+    this->head = nullptr;
+    this->tail = nullptr;
 }
 
 template <typename T>
-bool list<T>::clear()
+list<T>::list(list<T> &list)
 {
+    this->_size = 0;
     this->head = nullptr;
     this->tail = nullptr;
+
+    for (auto node: list)
+    {
+        std::shared_ptr<list_node<T>> temp_node = nullptr;
+        temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
+        temp_node->set(node.get());
+        this->push_back(temp_node);
+    }
+}
+
+template <typename T>
+list<T>::list(list<T> &&list)
+{
+    this->_size = list.size;
+    this->head = list.head;
+    this->tail = list.tail;
+}
+
+template <typename T>
+list<T>::list(const T *arr, const size_t len)
+{
     this->_size = 0;
+    this->head = nullptr;
+    this->tail = nullptr;
+    for (size_t i = 0; i < len; i++)
+    {
+        this->push_back(arr[i]);
+    }
+}
+
+template <typename T>
+list_iterator<T> list<T>::push_back(const T &data)
+{
+    std::shared_ptr<list_node<T>> node = nullptr;
+    node = std::shared_ptr<list_node<T>>(new list_node<T>);
+    node->set(data);
+    return this->push_back(node);
+}
+
+template <typename T>
+list_iterator<T> list<T>::push_back(const std::shared_ptr<list_node<T>> &node)
+{
+    std::shared_ptr<list_node<T>> temp_node = nullptr;
+    temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
+    std::cout << "CHECK " << (node->get()) << std::endl;
+    temp_node->set(node->get());
+
+    if (!this->_size)
+    {
+        this->head = temp_node;
+        this->tail = nullptr;
+    }
+    else
+    {
+        this->tail = temp_node;
+        this->tail->set_next(nullptr);
+    }
+
+    this->_size++;
+
+    list_iterator<T> iterator(this->tail);
+    return iterator;
+}
+
+template <typename T>
+list_iterator<T> list<T>::begin(void)
+{
+    list_iterator<T> iterator(this->head);
+    return iterator;
+}
+
+template <typename T>
+list_const_iterator<T> list<T>::cbegin(void) const
+{
+    list_const_iterator<T> iterator(this->head);
+    return iterator;
+}
+
+template <typename T>
+list_iterator<T> list<T>::end(void)
+{
+    list_iterator<T> iterator(this->tail);
+    return ++iterator;
+}
+
+template <typename T>
+list_const_iterator<T> list<T>::cend(void) const
+{
+    list_const_iterator<T> iterator(this->tail);
+    return ++iterator;
 }
 
 #endif

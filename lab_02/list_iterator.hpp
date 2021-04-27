@@ -1,5 +1,5 @@
-#ifndef _LISTNODE_HPP_
-#define _LISTNODE_HPP_
+﻿#ifndef _LIST_ITERATOR_HPP_
+#define _LIST_ITERATOR_HPP_
 
 template <typename T>
 list_iterator<T>::list_iterator()
@@ -20,7 +20,7 @@ list_iterator<T>::list_iterator(const list_iterator<T> &iterator)
 }
 
 template <typename T>
-void list_iterator<T>::go_to_next(void)
+void list_iterator<T>::next(void)
 {
     this->ptr = this->ptr.lock()->get_next();
 }
@@ -66,7 +66,7 @@ list_iterator<T> &list_iterator<T>::operator += (const size_t &size)
 }
 
 template <typename T>
-list_iterator<T> list_iterator<T>::operator + (const int &size) const
+list_iterator<T> list_iterator<T>::operator + (const size_t &size) const
 {
     list_iterator<T> new_iterator(*this);
     new_iterator += size;
@@ -85,6 +85,14 @@ list_iterator<T> &list_iterator<T>::operator ++ ()
 {
     this->next();
     return *this;
+}
+
+template <typename T>
+list_iterator<T> list_iterator<T>::operator ++ (int)
+{
+    list_iterator<T> new_iterator(*this);
+    this->next();
+    return new_iterator;
 }
 
 template <typename T>
