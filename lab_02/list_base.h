@@ -3,16 +3,21 @@
 
 #include <iostream>
 
-class list_base {
+class list_base
+{
 
 public:
     list_base();
-    virtual ~list_base();
+    virtual ~list_base() = 0;
+
     virtual bool is_empty() const = 0;
+    virtual void clear() = 0;
+
     size_t size() const;
 
 protected:
-    size_t size;
+    size_t _size;
+
 };
 
 #endif // LIST_BASE_H

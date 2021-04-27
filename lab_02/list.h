@@ -19,15 +19,28 @@ public:
     list(std::initializer_list<T> _list);
     list(const T *arr, const int size);
 
+    list<T> &extend(const list<T> &list_to_append);
+
+    //list_iterator<T> push_back(const T &data);
+    //list_iterator<T> push_back(const list<T> &list);
+
+    T pop_front();
+    T pop_back();
+
+    //list_iterator<T> begin();
+    //const_list_iterator<T> cbegin() const;
+
+    //list_iterator<T> end();
+    //const_list_iterator<T> cend() const;
+
     virtual bool is_empty() const;
     virtual void clear();
 
     ~list() = default;
 
 private:
-    size_t size;
     std::shared_ptr<list_node<T>> head;
     std::shared_ptr<list_node<T>> tail;
-}
+};
 
 #endif // LIST_H

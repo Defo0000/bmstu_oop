@@ -1,26 +1,17 @@
 #ifndef _LISTNODE_HPP_
 #define _LISTNODE_HPP_
 
-#include "list_node.h"
-
 template <typename T>
-list_node<T>::list_node(): data(0), next(nullptr) {}
+list_node<T>::list_node() : next(nullptr) {}
 
 template <typename T>
 list_node<T>::list_node(const T &data) : data(data), next(nullptr) {}
 
 template <typename T>
-list_node<T>::list_node(const shared_ptr<list_node<T>> &node)
+list_node<T>::list_node(const std::shared_ptr<list_node<T>> &node)
 {
     this->data = node->data;
     this->next = node->next;
-}
-
-template <typename T>
-list_node<T>::~list_node()
-{
-    this->data = 0;
-    this->next = nullptr;
 }
 
 template <typename T>
@@ -58,6 +49,42 @@ template <typename T>
 shared_ptr<list_node<T>> list_node<T>::get_next(void) const
 {
     return this->next;
+}
+
+template <typename T>
+bool list_node<T>::operator == (const std::shared_ptr<list_node<T>> &node) const
+{
+    return this == node;
+}
+
+template <typename T>
+bool list_node<T>::operator != (const std::shared_ptr<list_node<T>> &node) const
+{
+    return this != node;
+}
+
+template <typename T>
+bool list_node<T>::operator > (const std::shared_ptr<list_node<T>> &node) const
+{
+    return this->data > node->data;
+}
+
+template <typename T>
+bool list_node<T>::operator < (const std::shared_ptr<list_node<T>> &node) const
+{
+    return this->data < node->data;
+}
+
+template <typename T>
+bool list_node<T>::operator >= (const std::shared_ptr<list_node<T>> &node) const
+{
+    return this->data >= node->data;
+}
+
+template <typename T>
+bool list_node<T>::operator <= (const std::shared_ptr<list_node<T>> &node) const
+{
+    return this->data <= node->data;
 }
 
 #endif
