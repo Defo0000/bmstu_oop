@@ -7,8 +7,7 @@ public:
     list_base();
     virtual ~list_base() = default;
 
-    //virtual bool is_empty() const = 0;
-//    virtual void clear() = 0;
+    virtual bool is_empty() const;
 
     size_t size() const;
 

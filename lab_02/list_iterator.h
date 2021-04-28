@@ -5,7 +5,7 @@
 #include "list_node.h"
 
 template <typename T>
-class list_iterator : std::iterator<std::input_iterator_tag, T>
+class list_iterator : public std::iterator<std::input_iterator_tag, T>
 {
 public:
     list_iterator();
@@ -14,8 +14,9 @@ public:
 
     virtual ~list_iterator() = default;
 
-    operator bool() const;
     virtual void next();
+
+    bool is_nullptr() const;
 
     list_node<T> *operator ->();
     const list_node<T> *operator ->() const;

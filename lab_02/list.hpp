@@ -59,20 +59,20 @@ list_iterator<T> list<T>::push_back(const std::shared_ptr<list_node<T>> &node)
 {
     std::shared_ptr<list_node<T>> temp_node = nullptr;
     temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
-    std::cout << "CHECK " << (node->get()) << std::endl;
     temp_node->set(node->get());
 
     if (!this->_size)
     {
         this->head = temp_node;
-        this->tail = nullptr;
+        this->tail = temp_node;
     }
     else
     {
+        this->tail->set_next(temp_node);
         this->tail = temp_node;
-        this->tail->set_next(nullptr);
     }
 
+    this->tail->set_next(nullptr);
     this->_size++;
 
     list_iterator<T> iterator(this->tail);
@@ -82,29 +82,25 @@ list_iterator<T> list<T>::push_back(const std::shared_ptr<list_node<T>> &node)
 template <typename T>
 list_iterator<T> list<T>::begin(void)
 {
-    list_iterator<T> iterator(this->head);
-    return iterator;
+    return list_iterator<T>(this->head);
 }
 
 template <typename T>
 list_const_iterator<T> list<T>::cbegin(void) const
 {
-    list_const_iterator<T> iterator(this->head);
-    return iterator;
+    return list_const_iterator<T>(this->head);
 }
 
 template <typename T>
 list_iterator<T> list<T>::end(void)
 {
-    list_iterator<T> iterator(this->tail);
-    return ++iterator;
+    return ++list_iterator<T>(this->tail);
 }
 
 template <typename T>
 list_const_iterator<T> list<T>::cend(void) const
 {
-    list_const_iterator<T> iterator(this->tail);
-    return ++iterator;
+    return ++list_const_iterator<T>(this->tail);
 }
 
 #endif

@@ -38,9 +38,9 @@ const list_node<T> &list_const_iterator<T>::operator *() const
 }
 
 template <typename T>
-list_const_iterator<T>::operator bool() const
+bool list_const_iterator<T>::is_nullptr() const
 {
-    return this->ptr.lock() != nullptr;
+    return this->ptr.lock() == nullptr;
 }
 
 template <typename T>
@@ -92,7 +92,6 @@ bool list_const_iterator<T>::operator == (const list_const_iterator<T> &iterator
 template <typename T>
 bool list_const_iterator<T>::operator != (const list_const_iterator<T> &iterator) const
 {
-    std::cout << (this->ptr.lock() != nullptr) << " ";
     return this->ptr.lock() != iterator.ptr.lock();
 }
 

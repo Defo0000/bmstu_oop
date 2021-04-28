@@ -1,5 +1,5 @@
-﻿#ifndef _LIST_ITERATOR_HPP_
-#define _LIST_ITERATOR_HPP_
+﻿#ifndef LIST_ITERATOR_HPP
+#define LIST_ITERATOR_HPP
 
 template <typename T>
 list_iterator<T>::list_iterator()
@@ -50,9 +50,9 @@ const list_node<T> &list_iterator<T>::operator *() const
 }
 
 template <typename T>
-list_iterator<T>::operator bool() const
+bool list_iterator<T>::is_nullptr() const
 {
-    return this->ptr.lock() != nullptr;
+    return this->ptr.lock() == nullptr;
 }
 
 template <typename T>

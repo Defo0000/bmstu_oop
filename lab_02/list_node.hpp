@@ -1,5 +1,5 @@
-#ifndef _LISTNODE_HPP_
-#define _LISTNODE_HPP_
+#ifndef LISTNODE_HPP
+#define LISTNODE_HPP
 
 template <typename T>
 list_node<T>::list_node() : next(nullptr) {}
@@ -54,13 +54,13 @@ std::shared_ptr<list_node<T>> list_node<T>::get_next(void) const
 template <typename T>
 bool list_node<T>::operator == (const std::shared_ptr<list_node<T>> &node) const
 {
-    return this == node;
+    return this->data == node->data;
 }
 
 template <typename T>
 bool list_node<T>::operator != (const std::shared_ptr<list_node<T>> &node) const
 {
-    return this != node;
+    return this->data != node->data;
 }
 
 template <typename T>

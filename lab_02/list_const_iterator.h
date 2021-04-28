@@ -14,8 +14,9 @@ public:
 
     virtual ~list_const_iterator() = default;
 
-    operator bool() const;
     virtual void next();
+
+    bool is_nullptr() const;
 
     const list_node<T> *operator ->() const;
     const list_node<T> &operator *() const;
