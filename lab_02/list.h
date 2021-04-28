@@ -3,6 +3,7 @@
 
 #include <initializer_list>
 #include <memory>
+#include "errors.h"
 #include "list_base.h"
 #include "list_iterator.h"
 #include "list_const_iterator.h"

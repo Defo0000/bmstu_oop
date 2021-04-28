@@ -19,7 +19,17 @@ list<T>::list(list<T> &list)
     for (auto node: list)
     {
         std::shared_ptr<list_node<T>> temp_node = nullptr;
-        temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
+
+        try {
+            temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
+        } catch (std::bad_alloc &error) {
+            auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+            throw memory_error(__FILE__,
+                               ctime(&_time),
+                               typeid(list).name(),
+                               __FUNCTION__,
+                               __LINE__);
+        }
         temp_node->set(node.get());
         this->push_back(temp_node);
     }
