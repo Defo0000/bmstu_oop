@@ -75,4 +75,17 @@ public:
         base_error(file_name, time, class_name, func_name, line, info_msg) {}
 };
 
+class ptr_error : base_error
+{
+public:
+    ptr_error(
+            const std::string &file_name,
+            const std::string &time,
+            const std::string &class_name,
+            const std::string &func_name,
+            const int line,
+            const std::string &info_msg = "Incorrect pointer.") :
+        base_error(file_name, time, class_name, func_name, line, info_msg) {}
+};
+
 #endif // RETURN_CODES_H
