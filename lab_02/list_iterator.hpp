@@ -16,7 +16,7 @@ list_iterator<T>::list_iterator(const std::shared_ptr<list_node<T>> &node)
 template <typename T>
 list_iterator<T>::list_iterator(const list_iterator<T> &iterator)
 {
-    this->ptr = iterator.ptr.lock();
+    this->ptr = iterator.ptr;
 }
 
 template <typename T>
@@ -77,7 +77,7 @@ const list_node<T> &list_iterator<T>::operator *() const
 template <typename T>
 list_iterator<T>::operator bool() const
 {
-    return this->ptr.expired();
+    return this->ptr.expired() ? true : false;
 }
 
 template <typename T>

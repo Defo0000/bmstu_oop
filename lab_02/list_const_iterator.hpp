@@ -16,7 +16,7 @@ list_const_iterator<T>::list_const_iterator(const std::shared_ptr<list_node<T>> 
 template <typename T>
 list_const_iterator<T>::list_const_iterator(const list_const_iterator<T> &iterator)
 {
-    this->ptr = iterator.ptr.lock();
+    this->ptr = iterator.ptr;
 }
 
 template <typename T>
@@ -28,6 +28,12 @@ void list_const_iterator<T>::next(void)
         throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
     }
     this->ptr = this->ptr.lock()->get_next();
+}
+
+template <typename T>
+list_const_iterator<T>::operator bool() const
+{
+    return this->ptr.expired() ? true : false;
 }
 
 template <typename T>
@@ -50,12 +56,6 @@ const list_node<T> &list_const_iterator<T>::operator *() const
         throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
     }
     return *this->ptr.lock();
-}
-
-template <typename T>
-list_const_iterator<T>::operator bool() const
-{
-    return this->ptr.expired();
 }
 
 template <typename T>

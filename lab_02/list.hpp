@@ -284,7 +284,7 @@ T list<T>::pop(void)
 }
 
 template <typename T>
-T list<T>::remove(const list_iterator<T> &iterator)
+T list<T>::remove(const list_iterator<T> iterator)
 {
     if (iterator)
     {
@@ -319,7 +319,7 @@ T list<T>::remove(const list_iterator<T> &iterator)
 }
 
 template <typename T>
-list_iterator<T> list<T>::insert(const list_iterator<T> &iterator, const T &data)
+list_iterator<T> list<T>::insert(const list_iterator<T> iterator, const T data)
 {
     if (iterator)
     {
@@ -360,7 +360,7 @@ list_iterator<T> list<T>::insert(const list_iterator<T> &iterator, const T &data
 }
 
 template <typename T>
-list_iterator<T> list<T>::insert(const list_iterator<T> &iterator, const list<T> &list)
+list_iterator<T> list<T>::insert(const list_iterator<T> iterator, const list<T> &list)
 {
     if (iterator.is_nullptr())
     {
@@ -379,7 +379,7 @@ list_iterator<T> list<T>::insert(const list_iterator<T> &iterator, const list<T>
 }
 
 template <typename T>
-list_iterator<T> list<T>::insert(const list_const_iterator<T> &iterator, const T &data)
+list_iterator<T> list<T>::insert(const list_const_iterator<T> iterator, const T data)
 {
     if (iterator.is_nullptr())
     {
@@ -420,7 +420,7 @@ list_iterator<T> list<T>::insert(const list_const_iterator<T> &iterator, const T
 }
 
 template <typename T>
-list_iterator<T> list<T>::insert(const list_const_iterator<T> &iterator, const list<T> &list)
+list_iterator<T> list<T>::insert(const list_const_iterator<T> iterator, const list<T> &list)
 {
     if (iterator.is_nullptr())
     {

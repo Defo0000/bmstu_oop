@@ -30,11 +30,11 @@ public:
     virtual void clear();
     virtual bool is_empty() const;
 
-    list_iterator<T> insert(const list_iterator<T> &iterator, const T &data);
-    list_iterator<T> insert(const list_iterator<T> &iterator, const list<T> &list);
+    list_iterator<T> insert(const list_iterator<T> iterator, const T data);
+    list_iterator<T> insert(const list_iterator<T> iterator, const list<T> &list);
 
-    list_iterator<T> insert(const list_const_iterator<T> &iterator, const T &data);
-    list_iterator<T> insert(const list_const_iterator<T> &iterator, const list<T> &list);
+    list_iterator<T> insert(const list_const_iterator<T> iterator, const T data);
+    list_iterator<T> insert(const list_const_iterator<T> iterator, const list<T> &list);
 
     list_iterator<T> push_back(const T &data);
     list_iterator<T> push_back(list<T> const &list);
@@ -44,7 +44,7 @@ public:
 
     T pop();
 
-    T remove(const list_iterator<T> &iterator);
+    T remove(const list_iterator<T> iterator);
 
     void reverse();
 
