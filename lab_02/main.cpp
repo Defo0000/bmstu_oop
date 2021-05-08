@@ -52,12 +52,12 @@ int main()
     list1.push_front(3);
     print_list(list1);
 
-    cout << "Testing pop_front function..." << endl << endl;
-    list1.pop_front();
+    cout << "Testing pop function..." << endl << endl;
+    list1.pop();
     print_list(list1);
 
-    cout << "Testing pop_back function..." << endl << endl;
-    list1.pop_back();
+    cout << "Testing pop function..." << endl << endl;
+    list1.pop();
     print_list(list1);
 
     cout << "Testing remove function..." << endl << endl;

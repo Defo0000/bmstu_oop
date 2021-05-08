@@ -12,11 +12,11 @@ public:
     list_iterator(const std::shared_ptr<list_node<T>> &node);
     list_iterator(const list_iterator<T> &iterator);
 
-    virtual ~list_iterator() = default;
+    ~list_iterator() = default;
 
-    virtual void next();
+    void next();
 
-    bool is_nullptr() const;
+    operator bool() const;
 
     list_node<T> *operator ->();
     const list_node<T> *operator ->() const;
@@ -24,11 +24,12 @@ public:
     list_node<T> &operator *();
     const list_node<T> &operator *() const;
 
-    list_iterator<T> &operator += (const size_t &size);
-    list_iterator<T> operator + (const size_t &size) const;
     list_iterator<T> operator = (const list_iterator<T> &iterator);
     list_iterator<T> &operator ++ ();
     list_iterator<T> operator ++ (int);
+
+    list_iterator<T> &operator += (const size_t size);
+    list_iterator<T> operator + (const size_t size) const;
 
     bool operator != (const list_iterator<T> &iterator) const;
     bool operator == (const list_iterator<T> &iterator) const;

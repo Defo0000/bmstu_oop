@@ -23,7 +23,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    base_container.h \
+    base_container.hpp \
     errors.h \
+    iterator.h \
+    iterator.hpp \
     list.h \
     list.hpp \
     list_base.h \

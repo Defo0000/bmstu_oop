@@ -45,7 +45,7 @@ list<T>::list(list<T> &&list)
 }
 
 template <typename T>
-list<T>::list(const T *arr, const size_t len)
+list<T>::list(const T *arr, const size_t len) noexcept
 {
     this->size = 0;
     this->head = nullptr;
@@ -57,15 +57,79 @@ list<T>::list(const T *arr, const size_t len)
 }
 
 template <typename T>
-list<T>::list(std::initializer_list<T> nodes)
+list<T>::list(std::initializer_list<T> list)
 {
     this->size = 0;
     this->head = nullptr;
     this->tail = nullptr;
 
-    for (auto node: nodes)
+    for (auto node: list)
     {
         this->push_back(node);
+    }
+}
+
+template <typename T>
+template <typename T_>
+list<T>::list(T_ begin, T_ end)
+{
+    for (auto iterator = begin; iterator != end; ++iterator)
+    {
+        this->append(*iterator);
+    }
+}
+
+template <typename T>
+list<T> &list<T>::operator = (const list<T> &list)
+{
+    this->clear();
+
+    this->size = 0;
+    this->head = nullptr;
+    this->tail = nullptr;
+
+    push_back(list);
+    return *this;
+}
+
+template <typename T>
+list<T> &list<T>::operator = (const list<T> &&list)
+{
+    this->size = list.size;
+    this->head = list.head;
+    this->tail = list.tail;
+}
+
+template <typename T>
+list<T> &list<T>::operator=(std::initializer_list<T> list)
+{
+    if (this != &&list)
+    {
+        this->clear();
+        this->size = list->size;
+        this->head = list->begin;
+        this->tail = list->end;
+
+        list->size = 0;
+        list->begin = nullptr;
+        list->end = nullptr;
+    }
+
+    return *this;
+}
+
+template <typename T>
+bool list<T>::is_empty(void) const
+{
+    return (this->size == 0) ? true : false;
+}
+
+template <typename T>
+void list<T>::clear(void)
+{
+    while (!this->is_empty())
+    {
+        this->pop();
     }
 }
 
@@ -73,6 +137,7 @@ template <typename T>
 list_iterator<T> list<T>::push_back(const T &data)
 {
     std::shared_ptr<list_node<T>> node = nullptr;
+
     try {
 
         node = std::shared_ptr<list_node<T>>(new list_node<T>);
@@ -91,9 +156,9 @@ list_iterator<T> list<T>::push_back(const T &data)
 template <typename T>
 list_iterator<T> list<T>::push_back(const list<T> &list)
 {
-    for (auto cur = list.cbegin(); cur != list.cend(); cur++)
+    for (auto temp = list.cbegin(); temp != list.cend(); temp++)
     {
-        this->push_back((*cur).get());
+        this->push_back((*temp).get());
     }
 
     list_iterator<T> iterator(this->tail);
@@ -174,7 +239,7 @@ list_iterator<T> list<T>::push_front(const std::shared_ptr<list_node<T>> &node)
 {
     if (!node)
     {
-        auto time    = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw ptr_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
     }
 
@@ -193,7 +258,7 @@ list_iterator<T> list<T>::push_front(const std::shared_ptr<list_node<T>> &node)
 }
 
 template <typename T>
-T list<T>::pop_front(void)
+T list<T>::pop(void)
 {
     if (this->is_empty())
     {
@@ -219,41 +284,9 @@ T list<T>::pop_front(void)
 }
 
 template <typename T>
-T list<T>::pop_back(void)
-{
-    if (this->is_empty())
-    {
-        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        throw empty_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
-    }
-
-    T data = this->tail->get();
-
-    if (this->size == 1)
-    {
-        this->head = nullptr;
-        this->tail = nullptr;
-    }
-    else
-    {
-        std::shared_ptr<list_node<T>> cur = this->head;
-        while (cur->get_next() && cur->get_next()->get_next())
-        {
-            cur = cur->get_next();
-        }
-
-        this->tail = cur;
-    }
-
-    this->size--;
-
-    return data;
-}
-
-template <typename T>
 T list<T>::remove(const list_iterator<T> &iterator)
 {
-    if (iterator.is_nullptr())
+    if (iterator)
     {
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
@@ -267,7 +300,7 @@ T list<T>::remove(const list_iterator<T> &iterator)
 
     if (iterator == this->begin())
     {
-        return pop_front();
+        return pop();
     }
 
     list_iterator<T> temp_iterator = this->begin();
@@ -288,7 +321,7 @@ T list<T>::remove(const list_iterator<T> &iterator)
 template <typename T>
 list_iterator<T> list<T>::insert(const list_iterator<T> &iterator, const T &data)
 {
-    if (iterator.is_nullptr())
+    if (iterator)
     {
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
@@ -406,18 +439,15 @@ list_iterator<T> list<T>::insert(const list_const_iterator<T> &iterator, const l
 }
 
 template <typename T>
-void list<T>::clear(void)
-{
-    while (this->size != 0)
-    {
-        this->pop_front();
-    }
-}
-
-template <typename T>
 list_iterator<T> list<T>::begin(void)
 {
     return list_iterator<T>(this->head);
+}
+
+template <typename T>
+list_const_iterator<T> list<T>::begin(void) const
+{
+    return cbegin();
 }
 
 template <typename T>
@@ -430,6 +460,12 @@ template <typename T>
 list_iterator<T> list<T>::end(void)
 {
     return ++list_iterator<T>(this->tail);
+}
+
+template <typename T>
+list_const_iterator<T> list<T>::end(void) const
+{
+    return cend();
 }
 
 template <typename T>
@@ -478,27 +514,6 @@ list<T> &list<T>::operator + (const T &data)
 }
 
 template <typename T>
-list<T> &list<T>::operator = (const list<T> &list)
-{
-    this->clear();
-
-    this->size = 0;
-    this->head = nullptr;
-    this->tail = nullptr;
-
-    push_back(list);
-    return *this;
-}
-
-template <typename T>
-list<T> &list<T>::operator = (const list<T> &&list)
-{
-    this->size = list.size;
-    this->head = list.head;
-    this->tail = list.tail;
-}
-
-template <typename T>
 bool list<T>::operator == (const list<T> &list) const
 {
     auto this_iterator = this->cbegin();
@@ -526,16 +541,16 @@ bool list<T>::operator != (const list<T> &list) const
 template <typename T>
 void list<T>::reverse(void)
 {
-    std::shared_ptr<list_node<T>> current(this->head);
+    std::shared_ptr<list_node<T>> cur(this->head);
     std::shared_ptr<list_node<T>> next;
     std::shared_ptr<list_node<T>> prev;
 
-    while (current)
+    while (cur)
     {
-        next = current->get_next();
-        current->set_next(prev);
-        prev = current;
-        current = next;
+        next = cur->get_next();
+        cur->set_next(prev);
+        prev = cur;
+        cur = next;
     }
 
     prev = this->head;

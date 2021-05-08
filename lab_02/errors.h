@@ -1,5 +1,5 @@
-#ifndef RETURN_CODES_H
-#define RETURN_CODES_H
+#ifndef ERRORS_H
+#define ERRORS_H
 
 #include <exception>
 #include <ctime>
@@ -36,7 +36,7 @@ protected:
     std::string error_info;
 };
 
-class memory_error : base_error
+class memory_error : public base_error
 {
 public:
     memory_error(
@@ -49,7 +49,7 @@ public:
         base_error(file_name, time, class_name, func_name, line, info_msg) {}
 };
 
-class empty_error : base_error
+class empty_error : public base_error
 {
 public:
     empty_error(
@@ -62,7 +62,7 @@ public:
         base_error(file_name, time, class_name, func_name, line, info_msg) {}
 };
 
-class iterator_error : base_error
+class iterator_error : public base_error
 {
 public:
     iterator_error(
@@ -75,7 +75,7 @@ public:
         base_error(file_name, time, class_name, func_name, line, info_msg) {}
 };
 
-class ptr_error : base_error
+class ptr_error : public base_error
 {
 public:
     ptr_error(
@@ -88,4 +88,4 @@ public:
         base_error(file_name, time, class_name, func_name, line, info_msg) {}
 };
 
-#endif // RETURN_CODES_H
+#endif

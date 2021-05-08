@@ -22,29 +22,44 @@ list_const_iterator<T>::list_const_iterator(const list_const_iterator<T> &iterat
 template <typename T>
 void list_const_iterator<T>::next(void)
 {
+    if (this->ptr.expired())
+    {
+        auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
+    }
     this->ptr = this->ptr.lock()->get_next();
 }
 
 template <typename T>
 const list_node<T> *list_const_iterator<T>::operator ->() const
 {
+    if (this->ptr.expired())
+    {
+        auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
+    }
     return this->ptr.lock().get();
 }
 
 template <typename T>
 const list_node<T> &list_const_iterator<T>::operator *() const
 {
+    if (this->ptr.expired())
+    {
+        auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
+    }
     return *this->ptr.lock();
 }
 
 template <typename T>
-bool list_const_iterator<T>::is_nullptr() const
+list_const_iterator<T>::operator bool() const
 {
-    return this->ptr.lock() == nullptr;
+    return this->ptr.expired();
 }
 
 template <typename T>
-list_const_iterator<T> &list_const_iterator<T>::operator += (const size_t &size)
+list_const_iterator<T> &list_const_iterator<T>::operator += (const size_t size)
 {
     for (size_t i = 0; i < size; i++)
     {
@@ -54,7 +69,7 @@ list_const_iterator<T> &list_const_iterator<T>::operator += (const size_t &size)
 }
 
 template <typename T>
-list_const_iterator<T> list_const_iterator<T>::operator + (const size_t &size) const
+list_const_iterator<T> list_const_iterator<T>::operator + (const size_t size) const
 {
     list_iterator<T> new_iterator(*this);
     new_iterator += size;
