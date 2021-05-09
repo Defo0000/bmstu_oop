@@ -20,7 +20,14 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    objects/link.h \
+    objects/link.hpp \
+    objects/point.h \
+    objects/point.hpp \
+    point.h \
+    point.hpp \
+    scene.h
 
 FORMS += \
     mainwindow.ui
