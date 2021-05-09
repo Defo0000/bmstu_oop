@@ -9,7 +9,7 @@ class list_iterator : public std::iterator<std::input_iterator_tag, T>
 {
 public:
     list_iterator();
-    list_iterator(const std::shared_ptr<list_node<T>> &node);
+    explicit list_iterator(const std::shared_ptr<list_node<T>> &node);
     list_iterator(const list_iterator<T> &iterator);
 
     ~list_iterator() = default;

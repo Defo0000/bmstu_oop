@@ -119,12 +119,6 @@ list<T> &list<T>::operator=(std::initializer_list<T> list)
 }
 
 template <typename T>
-bool list<T>::is_empty(void) const
-{
-    return (this->size == 0) ? true : false;
-}
-
-template <typename T>
 void list<T>::clear(void)
 {
     while (!this->is_empty())

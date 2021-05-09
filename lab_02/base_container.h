@@ -8,7 +8,7 @@ public:
 
     virtual ~base_container() = default;
 
-    virtual bool is_empty() const = 0;
+    virtual bool is_empty() const;
 
     virtual void clear() = 0;
 

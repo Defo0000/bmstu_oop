@@ -28,7 +28,6 @@ public:
     ~list() = default;
 
     virtual void clear();
-    virtual bool is_empty() const;
 
     list_iterator<T> insert(const list_iterator<T> iterator, const T data);
     list_iterator<T> insert(const list_iterator<T> iterator, const list<T> &list);
