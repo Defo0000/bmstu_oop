@@ -18,11 +18,17 @@ public:
 
     operator bool() const;
 
-    list_node<T> *operator ->();
-    const list_node<T> *operator ->() const;
+    T *operator ->();
+    const T *operator ->() const;
 
-    list_node<T> &operator *();
-    const list_node<T> &operator *() const;
+    T &operator *();
+    const T &operator *() const;
+
+    T &get();
+    const T &get() const;
+
+    T &get_next();
+    const T &get_next() const;
 
     list_iterator<T> operator = (const list_iterator<T> &iterator);
     list_iterator<T> &operator ++ ();

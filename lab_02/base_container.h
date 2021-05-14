@@ -8,9 +8,9 @@ public:
 
     virtual ~base_container() = default;
 
-    virtual bool is_empty() const;
-
     virtual void clear() = 0;
+
+    bool is_empty() const;
 
     size_t get_size() const;
 

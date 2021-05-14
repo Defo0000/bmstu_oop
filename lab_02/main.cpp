@@ -15,7 +15,7 @@ void print_list(const list<T> &list)
         cout << "List: ";
         for (auto iterator = list.cbegin(); iterator != list.cend(); iterator++)
         {
-            cout << (*iterator).get() << " ";
+            cout << *iterator << " ";
         }
     }
     cout << endl << endl;

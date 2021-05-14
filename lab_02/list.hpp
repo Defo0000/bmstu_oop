@@ -18,17 +18,11 @@ list<T>::list(list<T> &list)
 
     for (auto node: list)
     {
-        std::shared_ptr<list_node<T>> temp_node = nullptr;
-
-        try {
-
-            temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
-
-        } catch (std::bad_alloc &error) {
-
+        std::shared_ptr<list_node<T>> temp_node = std::make_shared<list_node<T>>();
+        if (!temp_node)
+        {
             auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
             throw memory_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
-
         }
 
         temp_node->set(node.get());
@@ -37,15 +31,19 @@ list<T>::list(list<T> &list)
 }
 
 template <typename T>
-list<T>::list(list<T> &&list)
+list<T>::list(list<T> &&list) noexcept
 {
-    this->size = list.size;
-    this->head = list.head;
-    this->tail = list.tail;
+    this->size = list->size;
+    this->head.reset(list->head);
+    this->tail.reset(list->tail);
+
+    list->sizeList = 0;
+    list->head = nullptr;
+    list->tail = nullptr;
 }
 
 template <typename T>
-list<T>::list(const T *arr, const size_t len) noexcept
+list<T>::list(const T *arr, const size_t len)
 {
     this->size = 0;
     this->head = nullptr;
@@ -75,7 +73,7 @@ list<T>::list(T_ begin, T_ end)
 {
     for (auto iterator = begin; iterator != end; ++iterator)
     {
-        this->append(*iterator);
+        this->push_back(*iterator);
     }
 }
 
@@ -93,7 +91,7 @@ list<T> &list<T>::operator = (const list<T> &list)
 }
 
 template <typename T>
-list<T> &list<T>::operator = (const list<T> &&list)
+list<T> &list<T>::operator = (const list<T> &&list) noexcept
 {
     this->size = list.size;
     this->head = list.head;
@@ -128,50 +126,45 @@ void list<T>::clear(void)
 }
 
 template <typename T>
-list_iterator<T> list<T>::push_back(const T &data)
+list<T> &list<T>::push_back(const T &data)
 {
-    std::shared_ptr<list_node<T>> node = nullptr;
-
-    try {
-
-        node = std::shared_ptr<list_node<T>>(new list_node<T>);
-
-    }
-    catch (std::bad_alloc &error)
+    std::shared_ptr<list_node<T>> node = std::make_shared<list_node<T>>();
+    if (!node)
     {
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw memory_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
     }
 
     node->set(data);
-    return this->push_back(node);
+    this->push_back(node);
+    return *this;
 }
 
 template <typename T>
-list_iterator<T> list<T>::push_back(const list<T> &list)
+list<T> &list<T>::push_back(const list<T> &list)
 {
     for (auto temp = list.cbegin(); temp != list.cend(); temp++)
     {
-        this->push_back((*temp).get());
+        this->push_back((*temp));
     }
 
-    list_iterator<T> iterator(this->tail);
-    return iterator;
+    return *this;
 }
 
 template <typename T>
-list_iterator<T> list<T>::push_back(const std::shared_ptr<list_node<T>> &node)
+list<T> &list<T>::push_back(const std::shared_ptr<list_node<T>> &node)
 {
-    std::shared_ptr<list_node<T>> temp_node = nullptr;
+    std::shared_ptr<list_node<T>> temp_node = std::make_shared<list_node<T>>();
+    if (!temp_node)
+    {
+        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw memory_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
+    }
 
-    try {
-
-        temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
-
-    } catch (std::bad_alloc &errod) {
-
-        auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        throw memory_error(__FILE__, ctime(&_time), typeid(list).name(), __FUNCTION__, __LINE__);
+    if (!node)
+    {
+        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw ptr_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
     }
 
     temp_node->set(node->get());
@@ -179,57 +172,49 @@ list_iterator<T> list<T>::push_back(const std::shared_ptr<list_node<T>> &node)
     if (this->is_empty())
     {
         this->head = temp_node;
-        this->tail = temp_node;
     }
     else
     {
         this->tail->set_next(temp_node);
-        this->tail = temp_node;
     }
 
-    this->tail->set_next(nullptr);
+    this->tail = temp_node;
+
     this->size++;
 
-    list_iterator<T> iterator(this->tail);
-    return iterator;
+    return *this;
 }
 
 template <typename T>
-list_iterator<T> list<T>::push_front(const T &data)
+list<T> &list<T>::push_front(const T &data)
 {
-    std::shared_ptr<list_node<T>> cur_node = nullptr;
-
-    try
+    std::shared_ptr<list_node<T>> cur_node = std::make_shared<list_node<T>>();
+    if (!cur_node)
     {
-
-        cur_node = std::shared_ptr<list_node<T>>(new list_node<T>);
-
-    } catch (std::bad_alloc &error) {
-
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw memory_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
-
     }
 
     cur_node->set(data);
-    return this->push_front(cur_node);
+    this->push_front(cur_node);
+    return *this;
 }
 
 template <typename T>
-list_iterator<T> list<T>::push_front(const list<T> &list)
+list<T> &list<T>::push_front(const list<T> &list)
 {
     list_iterator<T> iterator;
 
     for (size_t i = 0; i < list.size; i++)
     {
-        iterator = this->insert(this->begin() + i, (*(list.cbegin() + i)).get());
+        iterator = this->insert(this->begin() + i, *(list.cbegin() + i));
     }
 
-    return iterator;
+    return *this;
 }
 
 template <typename T>
-list_iterator<T> list<T>::push_front(const std::shared_ptr<list_node<T>> &node)
+list<T> &list<T>::push_front(const std::shared_ptr<list_node<T>> &node)
 {
     if (!node)
     {
@@ -247,8 +232,7 @@ list_iterator<T> list<T>::push_front(const std::shared_ptr<list_node<T>> &node)
 
     this->size++;
 
-    list_iterator<T> iterator(node);
-    return iterator;
+    return *this;
 }
 
 template <typename T>
@@ -278,9 +262,9 @@ T list<T>::pop(void)
 }
 
 template <typename T>
-T list<T>::remove(const list_iterator<T> iterator)
+T list<T>::remove(const list_iterator<T> &iterator)
 {
-    if (iterator)
+    if (!iterator)
     {
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
@@ -292,20 +276,33 @@ T list<T>::remove(const list_iterator<T> iterator)
         throw empty_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
     }
 
-    if (iterator == this->begin())
+    std::shared_ptr<list_node<T>> cur_node = this->head;
+    std::shared_ptr<list_node<T>> tmp_node = nullptr;
+    list_iterator<T> cur_iterator = this->begin();
+
+    while (cur_node && cur_iterator != iterator)
     {
-        return pop();
+        tmp_node = cur_node;
+        cur_node = cur_node->get_next();
+        cur_iterator++;
     }
 
-    list_iterator<T> temp_iterator = this->begin();
-
-    while ((temp_iterator + 1) != iterator)
+    if (cur_node == nullptr)
     {
-        temp_iterator++;
+        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
     }
 
-    T data = temp_iterator->get();
-    temp_iterator->set_next(iterator->get_next());
+    T data = cur_iterator.get();
+
+    if (cur_node == this->head)
+    {
+        this->head = this->head->get_next();
+    }
+    else
+    {
+        tmp_node->set_next(cur_node->get_next());
+    }
 
     this->size--;
 
@@ -313,50 +310,99 @@ T list<T>::remove(const list_iterator<T> iterator)
 }
 
 template <typename T>
-list_iterator<T> list<T>::insert(const list_iterator<T> iterator, const T data)
+void list<T>::remove(const list_iterator<T> &begin, const list_iterator<T> &end)
 {
-    if (iterator)
+    if (!begin || !end)
+    {
+        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
+    }
+    if (this->is_empty())
+    {
+        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw empty_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
+    }
+
+    list_iterator<T> tmp;
+    for (auto iterator = begin; iterator != end; iterator++)
+    {
+        tmp = iterator;
+        this->remove(tmp);
+    }
+}
+
+template <typename T>
+list<T> list<T>::sublist(const list_iterator<T> &begin, const list_iterator<T> &end)
+{
+    if (!begin || !end)
+    {
+        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
+    }
+    return list<T>(begin, end);
+}
+
+template <typename T>
+list<T> list<T>::sublist(const list_iterator<T> &begin, const size_t count)
+{
+    if (!begin)
+    {
+        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
+    }
+    return list<T>(begin, begin + count);
+}
+
+template <typename T>
+list<T> list<T>::sublist(const size_t count)
+{
+    return list<T>(this->begin(), this->begin() + count);
+}
+
+template <typename T>
+list<T> &list<T>::insert(const list_iterator<T> &iterator, const T data)
+{
+    if (!iterator)
     {
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
     }
 
-    std::shared_ptr<list_node<T>> temp_node = nullptr;
+    std::shared_ptr<list_node<T>> cur_node = this->get_head();
+    std::shared_ptr<list_node<T>> tmp_node = nullptr;
+    list_iterator<T> cur_iterator = this->begin();
 
-    try
+    while (cur_node && cur_iterator != iterator)
     {
+        tmp_node = cur_node;
+        cur_node = cur_node->get_next();
+        cur_iterator++;
+    }
 
-        temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
-
-    } catch (std::bad_alloc &error) {
-
+    std::shared_ptr<list_node<T>> new_node = std::make_shared<list_node<T>>();
+    if (!new_node)
+    {
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw memory_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
-
     }
 
-    temp_node->set(data);
+    new_node->set(data);
+    new_node->set_next(cur_node);
 
-    list_iterator<T> temp_iterator = this->begin();
-
-    while ((temp_iterator + 1) != iterator)
-    {
-        temp_iterator++;
-    }
-
-    temp_node->set_next(temp_iterator->get_next());
-    temp_iterator->set_next(temp_node);
+    if (cur_node == this->head)
+        this->head = new_node;
+    else
+        tmp_node->set_next(new_node);
 
     this->size++;
 
-    list_iterator<T> insert_iterator(temp_node);
-    return insert_iterator;
+    return *this;
 }
 
 template <typename T>
-list_iterator<T> list<T>::insert(const list_iterator<T> iterator, const list<T> &list)
+list<T> &list<T>::insert(const list_iterator<T> &iterator, const list<T> &list)
 {
-    if (iterator.is_nullptr())
+    if (!iterator)
     {
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
@@ -366,70 +412,25 @@ list_iterator<T> list<T>::insert(const list_iterator<T> iterator, const list<T> 
 
     for (size_t i = 0; i < list.size; i++)
     {
-        insert_iterator = insert(iterator, (*(list.cbegin() + i)).get());
+        insert_iterator = insert(iterator, (*(list.cbegin() + i)));
     }
-
-    return insert_iterator;
+    return *this;
 }
 
 template <typename T>
-list_iterator<T> list<T>::insert(const list_const_iterator<T> iterator, const T data)
+template <typename T_It>
+list<T> &list<T>::insert(const list_iterator<T> &iterator, const T_It &begin, const T_It &end)
 {
-    if (iterator.is_nullptr())
+    if (!iterator)
     {
         auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
     }
 
-    std::shared_ptr<list_node<T>> temp_node = nullptr;
+    list<T> to_insert(begin, end);
+    this->insert(iterator, to_insert);
 
-    try
-    {
-
-        temp_node = std::shared_ptr<list_node<T>>(new list_node<T>);
-
-    } catch (std::bad_alloc &error) {
-
-        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        throw memory_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
-
-    }
-
-    temp_node->set(data);
-
-    list_iterator<T> temp_iterator = this->begin();
-
-    while ((temp_iterator + 1) != iterator)
-    {
-        temp_iterator++;
-    }
-
-    temp_node->set_next(temp_iterator->get_next());
-    temp_iterator->set_next(temp_node);
-
-    this->size++;
-
-    list_iterator<T> insert_iterator(temp_node);
-    return insert_iterator;
-}
-
-template <typename T>
-list_iterator<T> list<T>::insert(const list_const_iterator<T> iterator, const list<T> &list)
-{
-    if (iterator.is_nullptr())
-    {
-        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        throw iterator_error(__FILE__, ctime(&time), typeid(list).name(), __FUNCTION__, __LINE__);
-    }
-
-    list_iterator<T> insert_iterator;
-
-    for (size_t i = 0; i < list.size; i++)
-    {
-        insert_iterator = insert(iterator, (*(list.cbegin() + i)).get());
-    }
-
-    return insert_iterator;
+    return *this;
 }
 
 template <typename T>
@@ -480,6 +481,20 @@ std::shared_ptr<list_node<T>> list<T>::get_tail()
 }
 
 template <typename T>
+list<T> &list<T>::add(const list<T> &list)
+{
+    this->push_back(list);
+    return *this;
+}
+
+template <typename T>
+list<T> &list<T>::operator + (const list<T> &list)
+{
+    this->push_back(list);
+    return *this;
+}
+
+template <typename T>
 list<T> &list<T>::operator += (const list<T> &list)
 {
     this->push_back(list);
@@ -494,9 +509,9 @@ list<T> &list<T>::operator += (const T &data)
 }
 
 template <typename T>
-list<T> &list<T>::operator + (const list<T> &list)
+list<T> &list<T>::add(const T &data)
 {
-    this->push_back(list);
+    this->push_back(data);
     return *this;
 }
 
@@ -515,7 +530,7 @@ bool list<T>::operator == (const list<T> &list) const
 
     while (this_iterator != this->cend() && list_iterator != list.cend())
     {
-        if (this_iterator->get() != list_iterator->get())
+        if (this_iterator.get() != list_iterator.get())
         {
             return false;
         }
@@ -523,13 +538,13 @@ bool list<T>::operator == (const list<T> &list) const
         list_iterator++;
     }
 
-    return this->size == list.size;
+    return this->size == list.size ? true : false;
 }
 
 template <typename T>
 bool list<T>::operator != (const list<T> &list) const
 {
-    return !(*this == list);
+    return *this != list ? true : false;
 }
 
 template <typename T>
@@ -555,8 +570,21 @@ void list<T>::reverse(void)
 template <typename T>
 list<T> &list<T>::merge(const list<T> &list)
 {
-    this->push_back(list);
-    return *this;
+    list<T> new_list(*this);
+    new_list.push_back(list);
+
+    return new_list;
+}
+
+template <typename T>
+list_iterator<T> list<T>::find(const T &data)
+{
+    list_iterator<T> iterator = this->begin();
+
+    while ((iterator + 1) != this->end() && iterator.get() != data)
+        iterator++;
+
+    return iterator;
 }
 
 #endif

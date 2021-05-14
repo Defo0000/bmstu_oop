@@ -31,7 +31,7 @@ void list_iterator<T>::next(void)
 }
 
 template <typename T>
-list_node<T> *list_iterator<T>::operator ->()
+T *list_iterator<T>::operator ->()
 {
     if (this->ptr.expired())
     {
@@ -42,7 +42,7 @@ list_node<T> *list_iterator<T>::operator ->()
 }
 
 template <typename T>
-const list_node<T> *list_iterator<T>::operator ->() const
+const T *list_iterator<T>::operator ->() const
 {
     if (this->ptr.expired())
     {
@@ -53,31 +53,75 @@ const list_node<T> *list_iterator<T>::operator ->() const
 }
 
 template <typename T>
-list_node<T> &list_iterator<T>::operator *()
+T &list_iterator<T>::operator *()
 {
     if (this->ptr.expired())
     {
         auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
     }
-    return *this->ptr.lock();
+    return *this->ptr.lock().get();
 }
 
 template <typename T>
-const list_node<T> &list_iterator<T>::operator *() const
+const T &list_iterator<T>::operator *() const
 {
     if (this->ptr.expired())
     {
         auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
     }
-    return *this->ptr.lock();
+    return *this->ptr.lock().get();
+}
+
+template <typename T>
+T &list_iterator<T>::get()
+{
+    if (this->ptr.expired())
+    {
+        auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
+    }
+    return this->ptr.lock()->get_ptr();
+}
+
+template <typename T>
+const T &list_iterator<T>::get() const
+{
+    if (this->ptr.expired())
+    {
+        auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
+    }
+    return this->ptr.lock()->get();
+}
+
+template <typename T>
+T &list_iterator<T>::get_next()
+{
+    if (this->ptr.expired())
+    {
+        auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
+    }
+    return this->ptr.lock()->get_next()->get();
+}
+
+template <typename T>
+const T &list_iterator<T>::get_next() const
+{
+    if (this->ptr.expired())
+    {
+        auto _time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        throw iterator_error(__FILE__, ctime(&_time), typeid(*this).name(), __FUNCTION__, __LINE__);
+    }
+    return this->ptr.lock()->get_ptr();
 }
 
 template <typename T>
 list_iterator<T>::operator bool() const
 {
-    return this->ptr.expired() ? true : false;
+    return this->ptr.expired() ? false : true;
 }
 
 template <typename T>
