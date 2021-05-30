@@ -1,5 +1,4 @@
-#ifndef LINK_HPP
-#define LINK_HPP
+#pragma once
 
 #include "link.h"
 
@@ -14,5 +13,3 @@ size_t link::get_end() const { return this->_end; }
 void link::set_begin(size_t begin) { this->_begin = begin; }
 
 void link::set_end(size_t end) { this->_end = end; }
-
-#endif

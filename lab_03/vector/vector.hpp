@@ -15,7 +15,17 @@ public:
 
     virtual ~vector() = default;
 
-    virtual size_t get_size() const;
+    T at(size_t index) const;
 
-protected:
+    vector<T> &push_back(const T data);
+    vector<T> &operator += (const T data);
+
+    iterator<T> begin();
+    iterator<T> end();
+
+    const iterator<T> begin() const;
+    const iterator<T> end() const;
+
+private:
+
 };

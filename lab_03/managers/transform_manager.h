@@ -1,4 +1,1 @@
-#ifndef TRANSFORM_MANAGER_H
-#define TRANSFORM_MANAGER_H
-
-#endif // TRANSFORM_MANAGER_H
+#pragma once

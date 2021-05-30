@@ -20,14 +20,31 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    load/abstract_loader.h \
+    load/builder.h \
+    load/loader.h \
     mainwindow.h \
+    managers/base_manager.h \
+    managers/draw_manager.h \
+    managers/scene_manager.h \
+    managers/transform_manager.h \
+    objects/camera.h \
+    objects/camera.hpp \
+    objects/compound.h \
     objects/link.h \
     objects/link.hpp \
+    objects/model.h \
     objects/point.h \
     objects/point.hpp \
     point.h \
     point.hpp \
-    scene.h
+    scene.h \
+    vector/base_container.h \
+    vector/base_container.hpp \
+    vector/iterator.h \
+    vector/iterator.hpp \
+    vector/vector.h \
+    vector/vector.hpp
 
 FORMS += \
     mainwindow.ui

@@ -1,5 +1,4 @@
-#ifndef LINK_H
-#define LINK_H
+#pragma once
 
 #include <stdlib.h>
 
@@ -25,4 +24,3 @@ private:
     size_t _end;
 };
 
-#endif // LINK_H

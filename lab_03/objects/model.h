@@ -1,4 +1,7 @@
-#ifndef MODEL_H
-#define MODEL_H
+#pragma once
 
-#endif // MODEL_H
+class model
+{
+private:
+    std::shared_ptr<compound> _compound;
+};

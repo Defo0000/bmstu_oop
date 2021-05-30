@@ -1,4 +1,7 @@
-#ifndef COMPOUND_H
-#define COMPOUND_H
+#pragma once
 
-#endif // COMPOUND_H
+class compound
+{
+    compound() = default;
+    ~compound() = default;
+};

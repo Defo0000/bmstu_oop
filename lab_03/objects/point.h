@@ -1,30 +1,26 @@
-#ifndef POINT_H
-#define POINT_H
+#pragma once
 
-template <typename T>
 class point
 {
 public:
     explicit point();
-    explicit point(const T x, const T y, const T z);
+    explicit point(const double x, const double y, const double z);
 
     point(const point &_point);
     point& operator = (const point &_point);
 
-    T get_x() const;
-    T get_y() const;
-    T get_z() const;
+    double get_x() const;
+    double get_y() const;
+    double get_z() const;
 
-    void set_x(T x);
-    void set_y(T y);
-    void set_z(T z);
+    void set_x(double x);
+    void set_y(double y);
+    void set_z(double z);
 
-    void transform(const std::shared_ptr<Matrix<T>> trfm_mtr);
+    void transform(const std::shared_ptr<Matrix<double>> trfm_mtr);
 
 private:
-    T _x, _y, _z;
+    double _x, _y, _z;
 };
 
 #include "point.hpp:
-
-#endif // POINT_H
