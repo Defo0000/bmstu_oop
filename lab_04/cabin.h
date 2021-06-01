@@ -2,7 +2,7 @@
 #define CABIN_H
 
 #include "defines.h"
-#include "door.h"
+#include "doors.h"
 
 class cabin : public QObject
 {
@@ -11,7 +11,7 @@ class cabin : public QObject
     enum cabin_state
     {
         MOVE,
-        ACTIVE,
+        WAIT,
         STAND
     };
 
@@ -19,20 +19,24 @@ public:
     explicit cabin(QObject *parent = nullptr);
 
 signals:
-    void passing_floor(int floor);
-    void stop();
+    void cabin_called();
+    void cabin_passing_floor(int floor);
+    void cabin_reached_target(int floor);
+    void cabin_stopped(int floor);
 
 public slots:
-    void move();
-    void stand();
-    void call(int floor);
+    void cabin_move();
+    void cabin_stopping();
+    void cabin_call(int floor);
 
 private:
-    door _door;
-    int _floor;
-    int _target;
-    cabin_state _state;
-    direction _direction;
+    doors _doors;
+    int cur_floor;
+    int cur_target;
+    bool new_target;
+    cabin_state cur_state;
+    direction cur_direction;
+    QTimer passing_floor_timer;
 };
 
 #endif // CABIN_H
