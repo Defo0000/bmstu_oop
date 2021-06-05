@@ -1,80 +1,74 @@
 #include "cabin.h"
+#include <stdio.h>
 
-cabin::cabin(QObject *parent) : QObject(parent), cur_floor(START_FLOOR), target(START_STATE),
-    new_target(false), cur_state(cabin::STAND), cur_direction(STAY)
+cabin::cabin(QObject *parent): QObject(parent)
 {
-    passing_floor_timer.setSignalShot(true);
+    movement_timer.setSingleShot(true);
 
-    QObject::connect(this, SIGNAL(cabin_called()), &doors, SLOT(start_closing()));
-    QObject::connect(this, SIGNAL(cabin_reached_target(int)), this, SLOT(cabin_stopping()));
-    QObject::connect(this, SIGNAL(cabin_stopped(int)), &doors, SLOT(start_openning()));
-    QObject::connect(&doors, SIGNAL(closed_doors()), this, SLOT(cabin_move()));
-    QObject::connect(&passing_floor_timer, SIGNAL(timeout()), this, SLOT(cabin_move()));
+    QObject::connect(this, SIGNAL(cabin_called()), this, SLOT(move()));
+    QObject::connect(this, SIGNAL(cabin_stopped()), &_doors, SLOT(opening()));
+    QObject::connect(this, SIGNAL(cabin_target_reached(int)), this, SLOT(stop(int)));
+    QObject::connect(&_doors, SIGNAL(doors_closed()), this, SLOT(wait()));
+    QObject::connect(&movement_timer, SIGNAL(timeout()), this, SLOT(move()));
 }
 
-void cabin::cabin_move()
+void cabin::stop(int floor)
 {
+    if (state != MOVE)
+        return;
 
-    if (new_target)
+    state = STOP;
+
+    qDebug() << "Кабина остановилась на"<< floor << "этаже.\n";
+
+    emit cabin_stopped();
+}
+
+void cabin::wait()
+{
+    if (state != STOP)
+        return;
+
+    state = WAIT;
+
+    qDebug() << "Ожидание пассажиров.\n";
+
+    emit cabin_wait(cur_floor);
+}
+
+void cabin::move()
+{
+    if (state != START_MOVE && state != MOVE)
+        return;
+
+    if (state == MOVE)
     {
-        if (cur_state == WAIT)
-        {
-            cur_state = MOVE;
+        cur_floor += cur_direction;
+    }
 
-            if (cur_floor == target)
-            {
-                emit cabin_reached_target(cur_floor);
-            }
-            else
-            {
-                passing_floor_timer.start(FLOOR_PASSING_TIME);
-            }
-        }
-        else if (cur_state == MOVE)
-        {
-            cur_floor += cur_direction;
+    state = MOVE;
 
-            if (cur_floor == target)
-            {
-                emit cabin_reached_target(cur_floor);
-            }
-            else
-            {
-                emit cabinT_passing_floor(cur_floor);
-                passing_floor_timer.start(FLOOR_PASSING_TIME);
-            }
-        }
+    if (cur_floor == cur_target)
+    {
+        emit cabin_target_reached(cur_floor);
+    }
+    else
+    {
+        emit cabin_passed_floor(cur_floor, cur_direction);
+
+        movement_timer.start(MOVEMENT_TIME);
     }
 }
 
-void cabin::cabin_stopping()
+void cabin::get_target(int floor, const direction &dir)
 {
-    if (cur_state == MOVE)
-    {
-        cur_state = STAND;
-        qDebug() << "Лифт остановился на " << cur_floor << " этаже.";
-        emit cabin_stopped(cur_floor);
-    }
-}
+    if (state != WAIT)
+        return;
 
-void cabin::cabin_call(int floor)
-{
-    if (cur_state == STAND)
-    {
-        cur_state = WAIT;
-        new_target = true;
-        target = floor;
+    state = START_MOVE;
 
-        cur_direction = STAY;
-        if (cur_floor < target)
-        {
-            cur_direction = UP;
-        }
-        if (cur_floor > target)
-        {
-            cur_direction = DOWN;
-        }
+    cur_target = floor;
+    cur_direction = dir;
 
-        emit cabin_stopped(cur_floor);
-    }
+    emit cabin_called();
 }

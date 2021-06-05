@@ -3,7 +3,7 @@
 
 #include "defines.h"
 
-class controller : public QObject
+class controller: public QObject
 {
     Q_OBJECT
 
@@ -15,25 +15,24 @@ class controller : public QObject
 
 public:
     explicit controller(QObject *parent = nullptr);
-    void set_new_target(int floor);
-
-signals:
-    void set_target(int floor);
+    void new_target(int floor);
 
 public slots:
-    void achieved_floor(int floor);
-    void passed_floor(int floor);
+    void free(int floor);
+    void busy(int floor, const direction &dir);
+
+signals:
+    void controller_new_target(int floor, const direction &dir);
 
 private:
-    vector<bool> is_target;
-    
-    int cur_floor;
-    int cur_target;
-    controller_state cur_state;
-    direction cur_direction;
+    direction cur_direction = STAY;
+    int cur_floor = START_FLOOR;
+    int cur_target = START_TARGET;
+    controller_state state = FREE;
 
-    bool next_target(int &floor);
-    void find_new_target();
+    void next_target();
+
+    std::vector<bool> is_target;
 };
 
 #endif // CONTROLLER_H

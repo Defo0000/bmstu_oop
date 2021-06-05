@@ -1,116 +1,71 @@
 #include "controller.h"
+#include <stdio.h>
 
-controller::controller(QObject *parent) : 
-    QObject(parent), cur_floor(START_FLOOR), cur_target(START_STATE),
-    is_target(), cur_state(), cur_direction() {}
-
-void controller::set_new_target(int floor)
+controller::controller(QObject *parent): QObject(parent)
 {
-    cur_state = controller::BUSY;
+    is_target.resize(FLOORS_AMOUNT);
+    for (int i = 0; i < FLOORS_AMOUNT; i++)
+        is_target[i] = false;
+
+    QObject::connect(this, SIGNAL(controller_new_target(int, direction)), this, SLOT(busy(int, direction)));
+}
+
+void controller::new_target(int floor)
+{
+    qDebug() << "В лифте был вызван" << floor << "этаж.\n";
     is_target[floor - 1] = true;
-
-    if (cur_target == START_STATE)
+    if (state == FREE)
     {
+        next_target();
+    }
+}
+
+void controller::busy(int floor, const direction &dir)
+{
+    if (state == FREE)
+    {
+        state = BUSY;
+
         cur_target = floor;
+        cur_direction = dir;
     }
-    if ((cur_direction == UP && floor > cur_target) ||
-        (cur_direction == DOWN && floor < cur_target))
+    else if (state == BUSY)
     {
-        cur_target = floor; 
-    }
+        qDebug() << "Лифт проезжает" << floor << "этаж.\n";
 
-    //next_target(floor);
-
-    cur_floor > cur_target ? cur_direction = DOWN : cur_direction = UP;
-
-    emit set_target(floor);
-}
-
-void controller::achieved_floor(int floor)
-{
-    if (cur_state == BUSY)
-    {
-        cur_floor = floor;
-        is_target[floor - 1] = false;
-
-        if (cur_floor == cur_target)
-        {
-            cur_target = START_STATE;
-            find_new_target();
-        }
-
-        if (next_target(floor))
-        {
-            cur_floor > cur_target ? cur_direction = DOWN : cur_direction = UP;
-            emit set_target(floor);
-        }
-        else
-        {
-            cur_state = FREE;
-        }
+        cur_floor += cur_direction;
     }
 }
 
-void controller::passed_floor(int floor)
+void controller::free(int floor)
 {
+    state = FREE;
+
     cur_floor = floor;
-    qDebug() << "Лифт проезжает " << floor << " этаж.\n";
+
+    next_target();
 }
 
-void controller::find_new_target()
+void controller::next_target()
 {
-    bool flag = false;
-
-    if (cur_direction == UP)
+    if (is_target[cur_floor - 1])
     {
-        for (int i = FLOORS_AMOUNT; i >= 1 && !flag; i--)
-        {
-            if (is_target[i - 1])
-            {
-                flag = true;
-                cur_target = i;
-            }
-        }
+        is_target[cur_floor - 1] = false;
+        emit controller_new_target(cur_floor, STAY);
     }
     else
     {
-        for (int i = 1; i <= FLOORS_AMOUNT && !flag; i++)
+        for (int i = 0; i < FLOORS_AMOUNT; i++)
         {
-            if (is_target[i - 1])
+            if (is_target[i])
             {
-                flag = true;
-                cur_target = i;
+                is_target[i] = false;
+
+                if (i + 1 > cur_floor)
+                    emit controller_new_target(i + 1, UP);
+                else
+                    emit controller_new_target(i + 1, DOWN);
             }
         }
     }
-}
-
-bool controller::next_target(int &floor)
-{
-    bool flag = false;
-
-    if (cur_target > cur_floor)
-    {
-        for (int i = cur_floor; i <= FLOORS_AMOUNT && !flag; i += 1)
-        {
-            if (is_target[i - 1])
-            {
-                floor = i;
-                flag = true;
-            }
-        }
-    }
-    else
-    {
-        for (int i = cur_floor; i >= 1 && !flag; i -= 1)
-        {
-            if (is_target[i - 1])
-            {
-                floor = i;
-                flag = true;
-            }
-        }
-    }
-
-    return flag;
 }

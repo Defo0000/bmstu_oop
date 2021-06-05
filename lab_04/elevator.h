@@ -1,21 +1,23 @@
-#ifndef ELEVATOR_H
-#define ELEVATOR_H
+#ifndef LIFT_H
+#define LIFT_H
 
 #include "defines.h"
-#include "controller.h"
 #include "cabin.h"
+#include "controller.h"
 
-class elevator : public QObject
+class elevator: public QObject
 {
     Q_OBJECT
-    
+
 public:
-    elevator();
-    void call(int floor);
+    explicit elevator(QObject *parent = nullptr);
+
+public slots:
+    void button_pressed(int floor);
 
 private:
-    controller _controller;
     cabin _cabin;
+    controller _controller;
 };
 
-#endif // ELEVATOR_H
+#endif // LIFT_H

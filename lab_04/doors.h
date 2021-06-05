@@ -3,38 +3,36 @@
 
 #include "defines.h"
 
-class doors : public QObject
+class doors: public QObject
 {
     Q_OBJECT
+
     enum doors_state
     {
+        CLOSED,
         OPENING,
         OPENED,
-        CLOSING,
-        CLOSED
+        CLOSING
     };
 
 public:
     explicit doors(QObject *parent = nullptr);
 
 signals:
-    void closed_doors();
-    void opened_doors();
+    void doors_closed();
+    void doors_opened();
 
 public slots:
-    void start_opening();
-    void start_closing();
-
-private slots:
-    void open();
-    void close();
+    void closing();
+    void opening();
+    void closed();
+    void opened();
 
 private:
-    doors_state cur_state;
-
-    QTimer doors_open_timer;
-    QTimer doors_close_timer;
-    QTimer doors_stay_opened_timer;
+    doors_state state = CLOSED;
+    QTimer opening_timer;
+    QTimer stay_timer;
+    QTimer closing_timer;
 };
 
 #endif // DOORS_H

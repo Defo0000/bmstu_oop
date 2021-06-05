@@ -1,26 +1,26 @@
-#ifndef DEFINES_H
-#define DEFINES_H
+#ifndef DIRECTION_H
+#define DIRECTION_H
 
 #include <QObject>
-#include <QDebug>
 #include <QTimer>
+#include <QDebug>
+#include <vector>
+
+#define STAY_TIME 2000
+#define CLOSING_TIME 2000
+#define OPENING_TIME 2000
+#define MOVEMENT_TIME 2000
+
+#define START_FLOOR 1
+#define START_TARGET 0
 
 #define FLOORS_AMOUNT 8
-#define START_STATE -1
-#define START_FLOOR 1
-
-#define FLOOR_PASSING_TIME 1500
-#define DOORS_ACTIVITY_TIME 2000
-#define ELEVATOR_WAITING_TIME 2000
-
-template <typename T>
-using vector = std::vector<T>;
 
 enum direction
 {
+    UP = 1,
     DOWN = -1,
-    STAY = 0,
-    UP = 1
+    STAY = 0
 };
 
-#endif // DEFINES_H
+#endif // DIRECTION_H
